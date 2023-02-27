@@ -1,6 +1,7 @@
--- *FINAL-COURSE PROJECT*
+-- /*FINAL-COURSE PROJECT*/
 
--- 1.(ASSGM) finding overall session and order volume by quarters for whole life of business
+-- 1.(ASSIGNMENT) finding overall session and order volume by quarters for whole life of business
+
 select
 year(website_sessions.created_at) as yr,
 quarter(website_sessions.created_at) as qtr,
@@ -12,7 +13,8 @@ on website_sessions.website_session_id = orders.website_session_id
 group by 1, 2
 order by 1, 2;
 
--- 2. (ASSGM) finding quarterly improvements like session-to-order cr, revenue per order and revenue per session
+-- 2. (ASSIGNMENT) finding quarterly improvements like session-to-order coversion rate, revenue per order and revenue per session
+
 select
 year(website_sessions.created_at) as yr,
 quarter(website_sessions.created_at) as qtr,
@@ -26,8 +28,10 @@ on website_sessions.website_session_id = orders.website_session_id
 group by 1, 2
 order by 1, 2;
 
--- 3. (ASSGM) quarterly views of oreders from gsearch-nonbrand, bsearch-nonbrand, brand-search overall, organic-search and direct-type-in. 
+-- 3. (ASSIGNMENT) quarterly views of oreders from gsearch-nonbrand, bsearch-nonbrand, brand-search overall, organic-search and direct-type-in. 
+
 -- STEP 1.
+
 select
 utm_source,
 utm_campaign,
@@ -36,6 +40,7 @@ from website_sessions
 group by 1, 2, 3;
 
 -- STEP 2. 
+
 select
 year(website_sessions.created_at) as yr,
 quarter(website_sessions.created_at) as qtr,
@@ -50,7 +55,8 @@ on website_sessions.website_session_id = orders.website_session_id
 group by 1, 2
 order by 1, 2;
 
--- 4. (ASSGM) finding sessions-to-order-conversion-rate for ASSGM-3. 
+-- 4. (ASSIGNMENT) finding quarterly sessions-to-order-conversion-rate for ASSIGNMENT-3. 
+
 select
 year(website_sessions.created_at) as yr,
 quarter(website_sessions.created_at) as qtr,
@@ -70,11 +76,14 @@ on website_sessions.website_session_id = orders.website_session_id
 group by 1, 2
 order by 1, 2;
 
--- 5. (ASSGM) finding monthly trending for revenue and margin by product along with total sales and revenue.
+-- 5. (ASSIGNMENT) finding monthly trending for revenue and margin by product along with total sales and revenue.
+
 -- STEP 1.
+
 select*from order_items;
 
 -- STEP 2.
+
 select
 year(created_at) as yr,
 month(created_at) as mo,
@@ -91,8 +100,10 @@ sum(price_usd-cogs_usd) as total_marg
 from order_items
 group by 1, 2;
 
--- 6. (ASSGM) 
+-- 6. (ASSIGNMENT) finding monthly sessions-to-product page along with how conversion from product to placing order has improved.
+ 
 -- STEP 1. 
+
 create temporary table product_pageviews
 SELECT
 website_session_id,
@@ -102,6 +113,7 @@ from website_pageviews
 where pageview_url = '/products';
 
 -- STEP 2.
+
 select
 year(saw_product_page_at) as yr,
 month(saw_product_page_at) as mo,
@@ -118,8 +130,10 @@ left join orders
 on product_pageviews.website_session_id = orders.website_session_id
 group by 1, 2; 
 
--- 7 (ASSGM)
+-- 7 (ASSIGNMENT) finding sales data since launch of 4th product on 05/12/2014 and showing how well each product cross-sell from one another.
+
 -- STEP 1. 
+
 create temporary table primary_product
 select 
 order_id,
@@ -129,6 +143,7 @@ from orders
 where created_at > '2014-12-05';
 
 -- STEP 2. 
+
 select
 primary_product_id,
 count(distinct order_id) as orders,
